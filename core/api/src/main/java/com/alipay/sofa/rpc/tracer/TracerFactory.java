@@ -30,7 +30,10 @@ public final class TracerFactory {
     static {
         // sofaTrace默认会将日志生成在用户目录下，占用C盘内存极大。logging.path在非springboot工程中未找到设置方式，因此通过System.setProperty设置。
         // 原理，在构造ServerConfig时，会触发RpcRuntimeContext的初始化，执行模块加载ModuleFactory.installModules();
-        // 在执行sofaTrace模块的module.install()时，debug跟踪会发现原理就是如果未配置logging.path，会调用System.setProperty添加此属性，默认值即用户目录下
+        // 在执行sofaTrace模块的module.install()时，debug跟踪会发现，在构造构造RpcSofaTrace实例过程中，会调用此方法LogEnvUtils.processGlobalSystemLogProperties()
+        // 就是如果未配置logging.path，会调用System.setProperty添加此属性，默认值即用户目录下
+        // 因此，在启动时，构造RpcSofaTracer之前，设置此属性，避免日志生成在C盘。
+        // 跟踪思路，发现服务启动前后，System.getProperty("logging.path")为null，在启动之后，有值了，因此断点在System类上，看是在何时被设置的。
         System.setProperty("logging.path", "./logs");
     }
 

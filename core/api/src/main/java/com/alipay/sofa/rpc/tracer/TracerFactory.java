@@ -23,20 +23,25 @@ import com.alipay.sofa.rpc.log.LogCodes;
 
 /**
  * Factory of Tracer
- *
  * @author <a href=mailto:zhanggeng.zg@antfin.com>GengZhang</a>
  */
 public final class TracerFactory {
 
+    static {
+        // sofaTrace默认会将日志生成在用户目录下，占用C盘内存极大。logging.path在非springboot工程中未找到设置方式，因此通过System.setProperty设置。
+        // 原理，在构造ServerConfig时，会触发RpcRuntimeContext的初始化，执行模块加载ModuleFactory.installModules();
+        // 在执行sofaTrace模块的module.install()时，debug跟踪会发现原理就是如果未配置logging.path，会调用System.setProperty添加此属性，默认值即用户目录下
+        System.setProperty("logging.path", "./logs");
+    }
+
     /**
      * 初始化Tracer实例
-     *
      * @return Tracer
      */
     public synchronized static Tracer getTracer(String tracerName) {
         try {
             ExtensionClass<Tracer> ext = ExtensionLoaderFactory.getExtensionLoader(Tracer.class)
-                .getExtensionClass(tracerName);
+                    .getExtensionClass(tracerName);
             if (ext == null) {
                 throw new SofaRpcRuntimeException(LogCodes.getLog(LogCodes.ERROR_FAIL_LOAD_TRACER_EXT, tracerName));
             }

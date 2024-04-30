@@ -18,7 +18,7 @@
             <PatternLayout charset="${RPC_FILE_ENCODING}">
                 <pattern>%d %-5p %-32t - %m%n %throwable</pattern>
             </PatternLayout>
-            <Policies>
+            <Policies> SOFATracer
                 <!-- 按天分日志文件:重要的是 filePattern 配置到按照天 -->
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
             </Policies>

@@ -1,0 +1,4 @@
+POST http://localhost:8888/rest/hello/1/mika
+
+###
+GET http://localhost:8888/rest/hello/1

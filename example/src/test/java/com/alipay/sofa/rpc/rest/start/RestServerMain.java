@@ -53,6 +53,7 @@ public class RestServerMain {
         ServerConfig serverConfig = new ServerConfig()
             .setProtocol("rest")
             .setPort(8888)
+            .setHost("127.0.0.1")
             .setDaemon(false);
 
         ProviderConfig<RestService> providerConfig = new ProviderConfig<RestService>()

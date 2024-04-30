@@ -48,7 +48,7 @@ public class GenericServiceImpl extends SofaGenericServiceTriple.GenericServiceI
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GenericServiceImpl.class);
 
-    protected UniqueIdInvoker   invoker;
+    protected UniqueIdInvoker invoker;
 
     public GenericServiceImpl(UniqueIdInvoker invoker) {
         super();
@@ -69,7 +69,7 @@ public class GenericServiceImpl extends SofaGenericServiceTriple.GenericServiceI
             Method declaredMethod = invoker.getDeclaredMethod(sofaRequest, request);
             if (declaredMethod == null) {
                 throw new SofaRpcException(RpcErrorType.SERVER_NOT_FOUND_INVOKER, "Cannot find invoke method " +
-                    methodName);
+                        methodName);
             }
             Class[] argTypes = getArgTypes(request);
             Serializer serializer = SerializerFactory.getSerializer(request.getSerializeType());
@@ -131,7 +131,7 @@ public class GenericServiceImpl extends SofaGenericServiceTriple.GenericServiceI
         for (int i = 0; i < argsList.size(); i++) {
             byte[] data = argsList.get(i).toByteArray();
             args[i] = serializer.decode(new ByteArrayWrapperByteBuf(data), argTypes[i],
-                null);
+                                        null);
         }
         return args;
     }
